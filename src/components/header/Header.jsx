@@ -1,7 +1,17 @@
 import React from "react";
+import { useContext } from "react";
+import { authContext } from "../../App";
 import "./Header.css";
 
 function Header() {
+  const cts = useContext(authContext);
+  const { isLoggedIn } = cts;
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    cts.setIsLoggedIn(false);
+  };
+
   return (
     <>
       <section className="navigation">
@@ -22,9 +32,17 @@ function Header() {
                 <a href="#!">Portfolio</a>
               </li>
 
-              <li>
-                <a href="#!">Login</a>
-              </li>
+              {isLoggedIn ? (
+                <li>
+                  <a href="#" onClick={() => logout()}>
+                    Logout
+                  </a>
+                </li>
+              ) : (
+                <li>
+                  <a href="/login">Login</a>
+                </li>
+              )}
             </ul>
           </nav>
         </div>
